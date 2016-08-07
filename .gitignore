@@ -4,6 +4,11 @@
 .RData
 .Ruserdata
 
+**/*.o
+**/*.so
+RcppExports.cpp
+RcppExports.R
+
 # Created by https://www.gitignore.io/api/r,osx
 
 # Also copying most of this to the SVN ignore

@@ -1,5 +1,5 @@
 micEconIndex <- function( prices, quantities, base, data, method, na.rm,
-   weights ) {
+   weights, EKS = FALSE ) {
 
    if( length( prices ) != length( quantities ) ) {
       stop( "arguments 'prices' and 'quantities' must have the same length" )
@@ -112,3 +112,32 @@ quantityIndex <- function( prices, quantities, base, data,
 }
 
 
+consolMatrix <- function(x) {
+  if (!is.data.table(x)) x <- as.data.table(x)
+  xRet <- x[, .(.N), by = names(x)]
+  nRet <- matrix(xRet$N, ncol = 1)
+  xRet[, N := NULL]
+  list(mat = as.matrix(xRet), freq = nRet)
+}
+
+
+
+fisherEKS <- function( prices, quantities, data) {
+
+    if (all(!duplicated(data[, prices])) & all(!duplicated(data[, quantities]))) {
+
+      ret <- fisherEKSdense(
+        data[, quantities],
+        data[, prices],
+        matrix(rep(1, nrow(data)), ncol = 1),
+        matrix(rep(1, nrow(data)), ncol = 1),
+        1:nrow(data),
+        1:nrow(data)
+      )
+
+    } else {
+      error("TODO")
+    }
+
+   return(as.vector(ret))
+}

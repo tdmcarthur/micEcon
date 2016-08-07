@@ -1,4 +1,4 @@
-library(testthat)
-library(micEconIndex)
+# library(testthat)
+# library(micEconIndex)
 
-test_check("micEconIndex")
+# test_check("micEconIndex")
