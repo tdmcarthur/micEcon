@@ -24,7 +24,7 @@ load("~/svn/micEcon/pkg/micEconIndex/tests/testthat/TFPIPcheck.Rdata", verbose =
 
 test_that("Fisher non-transitive index works", {
   expect_equal(micEconResult, TFPIPresult)
-}
+})
 
 
 #printIndices( "p",  c( "p.beef", "p.veal", "p.pork" ),
