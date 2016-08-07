@@ -1,0 +1,27 @@
+ Results from TFPIP Version 1.0
+ 
+Instruction file = eg1-ins.txt 
+Data file          = eg1-dta.txt 
+ 
+ Tornqvist Index Numbers
+ 
+ These Indices are NOT Transitive
+ 
+ 
+ INDICES OF CHANGES REL. TO PREVIOUS OBSERVATION:
+ 
+  obsn    output     input       TFP
+    2    0.9986    1.1007    0.9073
+    3    0.9974    1.0297    0.9686
+    4    1.0877    1.0896    0.9983
+    5    1.0586    1.0627    0.9962
+ 
+ 
+ CUMULATIVE INDICES:
+ 
+  obsn    output     input       TFP
+    1    1.0000    1.0000    1.0000
+    2    0.9986    1.1007    0.9073
+    3    0.9960    1.1333    0.8788
+    4    1.0833    1.2348    0.8773
+    5    1.1468    1.3122    0.8740
