@@ -29,10 +29,10 @@ write.csv(as.data.frame(cbind(outputPriceMat, outputQuantMat) ),
 
 
 
-eg1-dta.txt        DATA FILE NAME
-eg1-out.txt        OUTPUT FILE NAME
-5              NUMBER OF OBSERVATIONS
-2              NUMBER OF OUTPUTS
-3              NUMBER OF INPUTS
-0              0=TORNQVIST AND 1=FISHER
-0	         0=NON-TRANSITIVE AND 1=TRANSITIVE
+#eg1-dta.txt        DATA FILE NAME
+#eg1-out.txt        OUTPUT FILE NAME
+#5              NUMBER OF OBSERVATIONS
+#2              NUMBER OF OUTPUTS
+#3              NUMBER OF INPUTS
+#0              0=TORNQVIST AND 1=FISHER
+#0	         0=NON-TRANSITIVE AND 1=TRANSITIVE

@@ -26,6 +26,35 @@ instrFile <- c(
   1, 0
 )
 
+cat(instrFile,
+  file = "~/svn/micEcon/TFPIP/pkg-ins.txt",
+  sep = "\n")
+
+
+# Then run TFPIP manually
+
+# Then this:
+
+TFPIPlines <- readLines("~/svn/micEcon/TFPIP/pkg-out.txt")
+# TFPIPlines <- readLines("~/svn/micEcon/TFPIP/EG1-out.txt")
+startLines <- grep("obsn", TFPIPlines)
+
+TFPIPresult <- read.table("~/svn/micEcon/TFPIP/EG1-out.txt",
+  header = TRUE, sep = "",
+  skip = startLines[1] - 1,
+  nrows = startLines[2] - startLines[1] - 5)
+
+TFPIPresult <- c(1, TFPIPresult$input)
+
+save(TFPIPresult, file = "~/svn/micEcon/pkg/micEconIndex/tests/testthat/TFPIPcheck.Rdata")
+
+
+
+
+
+
+
+
 #TFPIP is a DOS computer program.  In DOS all file names must satisfy certain
 #restrictions:
 #	- no more than 12 characters
@@ -34,9 +63,7 @@ instrFile <- c(
 #That is, the largest possible file name has the form:
 #	XXXXXXXX.XXX
 
-#cat(instrFile,
-#  file = "~/svn/micEcon/TFPIP/pkg-ins.txt",
-#  sep = "\n")
+
 
 #system(c("/svn/micEcon/TFPIP/TFPIP.EXE /svn/micEcon/TFPIP/pkg-ins.txt",
 
