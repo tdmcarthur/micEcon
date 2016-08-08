@@ -11,7 +11,12 @@ context("EKS transitivity correction")
 # })
 
 
-priceQuantMat <- read.csv("~/svn/micEcon/pkg/micEconIndex/tests/testthat/priceQuantMat.txt")
+#priceQuantMat <- read.csv("~/svn/micEcon/pkg/micEconIndex/tests/testthat/priceQuantMat.txt")
+# data(priceQuantMat)
+# data(sysdata, envir=environment())
+# has priceQuantMat and TFPIPresult
+# This helped me:
+# http://stackoverflow.com/questions/9521009/how-do-you-handle-r-data-internal-to-a-package
 
 micEconResult <- quantityIndex(
     colnames(priceQuantMat)[substr(colnames(priceQuantMat), 1, 1) == "P"],
@@ -21,7 +26,9 @@ micEconResult <- quantityIndex(
 micEconResult <- unname(micEconResult)
 micEconResult <- round(micEconResult, 4)
 
-load("~/svn/micEcon/pkg/micEconIndex/tests/testthat/TFPIPcheck.Rdata", verbose = TRUE)
+# load("~/svn/micEcon/pkg/micEconIndex/tests/testthat/TFPIPcheck.Rdata", verbose = TRUE)
+# data(TFPIPresult)
+
 # TFPIPresult
 
 test_that("Fisher transitive index works", {

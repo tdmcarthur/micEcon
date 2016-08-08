@@ -1,3 +1,5 @@
+library(devtools)
+
 set.seed(100)
 
 nProd <- 10
@@ -14,10 +16,16 @@ colnames(outputQuantMat) <- paste0("Q", prodNames)
 outputPriceMat <- round(outputPriceMat + 1, 5)
 outputQuantMat <- round(outputQuantMat + 1, 5)
 
-write.csv(as.data.frame(cbind(outputPriceMat, outputQuantMat) ),
- #file = "~/tests/testthat/priceQuantMat.txt",
- file = "~/svn/micEcon/pkg/micEconIndex/tests/testthat/priceQuantMat.txt",
- row.names = FALSE)
+# write.csv(as.data.frame(cbind(outputPriceMat, outputQuantMat) ),
+#  #file = "~/tests/testthat/priceQuantMat.txt",
+#  file = "~/svn/micEcon/pkg/micEconIndex/tests/testthat/priceQuantMat.txt",
+#  row.names = FALSE)
+
+priceQuantMat <- as.data.frame(cbind(outputPriceMat, outputQuantMat) )
+# devtools::use_data(, internal = TRUE, overwrite = TRUE)
+
+load("data-raw/TFPIPcheck.Rdata", verbose = TRUE)
+devtools::use_data(TFPIPresult, priceQuantMat, internal = TRUE, overwrite = TRUE)
 
 
 #quantityIndex( paste0("P", prodNames),
