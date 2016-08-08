@@ -1,5 +1,7 @@
 
-priceQuantMat <- read.csv("~/svn/micEcon/pkg/micEconIndex/tests/testthat/priceQuantMat.txt")
+#priceQuantMat <- read.csv("~/svn/micEcon/pkg/micEconIndex/tests/testthat/priceQuantMat.txt")
+load("~/svn/micEcon/pkg/micEconIndex/R/sysdata.rda", verbose = TRUE)
+# Chaneg this to a load statement, then get the TFPIP stuff
 
 
 outputPriceMat <- priceQuantMat[, substr(colnames(priceQuantMat), 1, 1) == "P"]
@@ -32,7 +34,7 @@ cat(instrFile,
   sep = "\n")
 
 
-# Then run TFPIP manually
+# Then run TFPIP manually in Windows
 
 # Then this:
 
@@ -40,14 +42,20 @@ TFPIPlines <- readLines("~/svn/micEcon/TFPIP/pkg-out.txt")
 # TFPIPlines <- readLines("~/svn/micEcon/TFPIP/EG1-out.txt")
 startLines <- grep("obsn", TFPIPlines)
 
+#TFPIPresult <- read.table("~/svn/micEcon/TFPIP/pkg-out.txt",
+#  header = TRUE, sep = "",
+#  skip = startLines[1] - 1,
+#  nrows = startLines[2] - startLines[1] - 5)
+# Above was necessary for non-transitive indices
 TFPIPresult <- read.table("~/svn/micEcon/TFPIP/pkg-out.txt",
   header = TRUE, sep = "",
-  skip = startLines[1] - 1,
-  nrows = startLines[2] - startLines[1] - 5)
+  skip = startLines[1] - 1)
 
-TFPIPresult <- c(1, TFPIPresult$input)
+#TFPIPresult <- c(1, TFPIPresult$input)
+# Above was necessary for non-transitive indices
+TFPIPresult <- TFPIPresult$input
 
-save(TFPIPresult, file = "~/svn/micEcon/pkg/micEconIndex/tests/testthat/TFPIPcheck.Rdata")
+save(TFPIPresult, file = "~/svn/micEcon/pkg/micEconIndex/data-raw/TFPIPcheck.Rdata")
 
 
 
