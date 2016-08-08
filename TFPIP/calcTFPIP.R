@@ -57,7 +57,7 @@ TFPIPresult <- TFPIPresult$input
 
 save(TFPIPresult, file = "~/svn/micEcon/pkg/micEconIndex/data-raw/TFPIPcheck.Rdata")
 
-
+# Then run: pkg/micEconIndex/data-raw/generateData.R
 
 
 

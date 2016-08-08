@@ -1,3 +1,4 @@
+# Run this part:
 library(devtools)
 
 set.seed(100)
@@ -23,6 +24,9 @@ outputQuantMat <- round(outputQuantMat + 1, 5)
 
 priceQuantMat <- as.data.frame(cbind(outputPriceMat, outputQuantMat) )
 # devtools::use_data(, internal = TRUE, overwrite = TRUE)
+
+# Then pause and run TFPIP/calcTFPIP.R according to instructions there
+# And then run the below:
 
 load("data-raw/TFPIPcheck.Rdata", verbose = TRUE)
 devtools::use_data(TFPIPresult, priceQuantMat, internal = TRUE, overwrite = TRUE)
