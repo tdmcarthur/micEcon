@@ -1,0 +1,7 @@
+pkg-dta.txt
+pkg-out.txt
+100
+1
+10
+1
+0

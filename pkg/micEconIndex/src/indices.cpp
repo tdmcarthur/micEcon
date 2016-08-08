@@ -200,7 +200,11 @@ arma::mat fisherEKSsparse(const arma::sp_mat  Q_consol,  const arma::sp_mat  P_c
 }
 
 
-
+// [[Rcpp::plugins(cpp11)]]
+// [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::depends(RcppProgress)]]
+// #include <progress.hpp>
+// [[Rcpp::export]]
 arma::mat fisherEKSdense(const arma::mat  Q_consol,  const arma::mat  P_consol,
                              arma::mat     Q_freq,          arma::mat     P_freq,
                              arma::uvec    Q_ind,           arma::uvec    P_ind) {
@@ -489,8 +493,8 @@ set.seed(100)
 # n.row.fact <- 1000 ; real.rows.factor = 5 ; n.col <- 300;
 # With below, I get fastest 0.013; faster 0.014; naive 112.533:
 # n.row.fact <- 100 ; real.rows.factor = 100 ; n.col <- 100;
-# n.row.fact <- 10 ; real.rows.factor = 2 ; n.col <- 4;
-n.row.fact <- 1000 ; real.rows.factor = 1 ; n.col <- 400;
+ n.row.fact <- 10 ; real.rows.factor = 2 ; n.col <- 4;
+#n.row.fact <- 1000 ; real.rows.factor = 1 ; n.col <- 400;
 n.row = real.rows.factor; n.row = n.row * n.row.fact
 n.real.rows = n.row / real.rows.factor
 P.mat <- matrix(runif(n.real.rows*n.col), ncol = n.col, nrow = n.row, byrow = TRUE )
@@ -572,6 +576,19 @@ fisherIndfastestfurious.ret <- fisherIndfastestfurious(
 ))
 }
 
+
+fisherEKSdense.ret <- micEconIndex:::fisherEKSdense(
+               Q_consol = Q.mat.consol$mat,
+               P_consol = P.mat.consol$mat,
+                Q_freq = Q.mat.consol$freq,
+                #Q_freq = Q.mat.consol$freq,
+                P_freq = P.mat.consol$freq,
+                Q_ind = rep((1:n.real.rows) - 1, real.rows.factor),
+                P_ind = rep((1:n.real.rows) - 1, real.rows.factor))
+
+fisherInd.ret <- micEconIndex:::fisherInd(Q.mat, P.mat, 1)
+
+summary(fisherEKSdense.ret - fisherInd.ret )
 
 
 

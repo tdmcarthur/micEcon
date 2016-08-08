@@ -15,16 +15,41 @@ test_that("str_length is number of characters", {
 
 priceQuantMat <- read.csv("~/svn/micEcon/pkg/micEconIndex/tests/testthat/priceQuantMat.txt")
 
-micEconResult <- quantityIndex( colnames(priceQuantMat)[substr(colnames(priceQuantMat), 1, 1) == "P"],
+micEconResult.unadj <- quantityIndex( colnames(priceQuantMat)[substr(colnames(priceQuantMat), 1, 1) == "P"],
   colnames(priceQuantMat)[substr(colnames(priceQuantMat), 1, 1) == "Q"],
-  1, priceQuantMat)
+  1, priceQuantMat, method = "Fisher")
+
+micEconResult.fast.wrapped <- quantityIndex(
+    colnames(priceQuantMat)[substr(colnames(priceQuantMat), 1, 1) == "P"],
+    colnames(priceQuantMat)[substr(colnames(priceQuantMat), 1, 1) == "Q"],
+    1, priceQuantMat, method = "Fisher", EKS = TRUE)
+
+micEconResult.fast.bare <- micEconIndex:::fisherEKS(
+    colnames(priceQuantMat)[substr(colnames(priceQuantMat), 1, 1) == "P"],
+    colnames(priceQuantMat)[substr(colnames(priceQuantMat), 1, 1) == "Q"],
+    priceQuantMat)
+
+summary(micEconResult.fast.wrapped - micEconResult.fast.bare)
+
+micEconResult.simple <- micEconIndex:::fisherEKS.simple(
+    colnames(priceQuantMat)[substr(colnames(priceQuantMat), 1, 1) == "P"],
+    colnames(priceQuantMat)[substr(colnames(priceQuantMat), 1, 1) == "Q"],
+    priceQuantMat)
+
+summary(micEconResult.fast.wrapped  - micEconResult.simple)
+
+
+micEconResult.fast.wrapped <- unname(micEconResult.fast.wrapped)
+micEconResult.fast.wrapped <- round(micEconResult.fast.wrapped, 4)
 
 load("~/svn/micEcon/pkg/micEconIndex/tests/testthat/TFPIPcheck.Rdata", verbose = TRUE)
 # TFPIPresult
 
-test_that("Fisher non-transitive index works", {
-  expect_equal(micEconResult, TFPIPresult)
+test_that("Fisher transitive index works", {
+  expect_equal(micEconResult.fast.wrapped, TFPIPresult)
 })
+
+#cor(micEconResult.fast.wrapped, TFPIPresult)
 
 
 #printIndices( "p",  c( "p.beef", "p.veal", "p.pork" ),

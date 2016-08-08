@@ -1,6 +1,7 @@
 
 priceQuantMat <- read.csv("~/svn/micEcon/pkg/micEconIndex/tests/testthat/priceQuantMat.txt")
 
+
 outputPriceMat <- priceQuantMat[, substr(colnames(priceQuantMat), 1, 1) == "P"]
 outputQuantMat <- priceQuantMat[, substr(colnames(priceQuantMat), 1, 1) == "Q"]
 
@@ -23,7 +24,7 @@ write.table(cbind(outputQuantMat, outputPriceMat),
 instrFile <- c(
   "pkg-dta.txt", "pkg-out.txt", nrow(outputQuantMat),
   1, ncol(outputQuantMat) - 1,
-  1, 0
+  1, 1
 )
 
 cat(instrFile,
@@ -39,7 +40,7 @@ TFPIPlines <- readLines("~/svn/micEcon/TFPIP/pkg-out.txt")
 # TFPIPlines <- readLines("~/svn/micEcon/TFPIP/EG1-out.txt")
 startLines <- grep("obsn", TFPIPlines)
 
-TFPIPresult <- read.table("~/svn/micEcon/TFPIP/EG1-out.txt",
+TFPIPresult <- read.table("~/svn/micEcon/TFPIP/pkg-out.txt",
   header = TRUE, sep = "",
   skip = startLines[1] - 1,
   nrows = startLines[2] - startLines[1] - 5)
