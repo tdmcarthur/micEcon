@@ -19,20 +19,20 @@ arma::mat fisherEKSsparse(const arma::sp_mat  Q_consol,  const arma::sp_mat  P_c
                               //     arma::mat split_size) {
 
   // auto x = 10;
-  cout << "Got here, after data read-in " << endl;
+  // cout << "Got here, after data read-in " << endl;
   uword base_period = 0 ;
   double M_dbl = Q_ind.n_elem ;
   uword split_interval = ceil( as_scalar(2e+12) / (P_consol.n_rows * Q_consol.n_rows)) ;
   // 1e+08 ; 1e+6; 1e+2; 1e+12; 2e+10 2e+6; Best: split_size = 1e+13
   // The 1e+08 will likely create a bug if there are more than 100 million firms
   // 1e+08 is designed to keep the Q_split_x_P under one gig of memory
-  cout << "Got here, right before spl creation " << endl;
+  // cout << "Got here, right before spl creation " << endl;
   uvec spl = regspace<uvec>(1, split_interval, Q_consol.n_rows - 1) - 1L  ;
   // subtracting 1 from P_consol.n_rows so that I can append it later
   // without running into a bug. Using the useful behavior of regspace here
-  cout << "Got here, after spl creation " << endl;
+  // cout << "Got here, after spl creation " << endl;
   spl.resize(spl.n_elem + 1) ;
-  cout << "Got here, after spl resize " << endl;
+  // cout << "Got here, after spl resize " << endl;
   spl(spl.n_elem - 1) = Q_consol.n_rows  ;
   // preventing off-by-one error.
 
@@ -43,14 +43,14 @@ arma::mat fisherEKSsparse(const arma::sp_mat  Q_consol,  const arma::sp_mat  P_c
   arma::vec revenue(Q_ind.n_elem) ;
   revenue.zeros() ;
 
-  cout << "spl.n_rows = " << spl.n_rows << std::endl;
-  // cout << "spl values: " << endl;
-  cout << "spl element 0 = " << spl(0) << std::endl;
-  cout << "spl element 1 = " << spl(1) << std::endl;
-  cout << "spl elements = " << std::endl;
+  // cout << "spl.n_rows = " << spl.n_rows << std::endl;
+  // // cout << "spl values: " << endl;
+  // cout << "spl element 0 = " << spl(0) << std::endl;
+  // cout << "spl element 1 = " << spl(1) << std::endl;
+  // cout << "spl elements = " << std::endl;
  // spl.print() ;
 
-  cout << "Got here, right before loop " << endl;
+  // cout << "Got here, right before loop " << endl;
 
 //   stop("") ;
 
@@ -63,7 +63,7 @@ arma::mat fisherEKSsparse(const arma::sp_mat  Q_consol,  const arma::sp_mat  P_c
  // Progress p(0, false);
 
   for (uword spl_i=0; spl_i < (spl.n_elem - 1); spl_i++) {
-    cout << "iteration " << spl_i << " of " << (spl.n_elem - 1) << endl;
+    // cout << "iteration " << spl_i << " of " << (spl.n_elem - 1) << endl;
     // Note that col < split.n_elem is strictly less than, so
     // it won't run over the last element.
     // uvec split_span = span(split(split_it), split(split_it + 1)) ;
@@ -78,20 +78,20 @@ arma::mat fisherEKSsparse(const arma::sp_mat  Q_consol,  const arma::sp_mat  P_c
     arma::mat Q_split_x_P = log( conv_to<mat>::from(Q_consol.rows(
       spl(spl_i), spl(spl_i + 1) - 1) * P_consol.t() )) ;
 
-    cout << "Main matrix operation time = " << timer.toc()  << endl;
+    // cout << "Main matrix operation time = " << timer.toc()  << endl;
 
-    cout << "Got here, after Q_split_x_P  creation " << endl;
+    // cout << "Got here, after Q_split_x_P  creation " << endl;
 
     timer.tic();
 
     Q_x_P_vec(span( spl(spl_i), spl(spl_i + 1) - 1 )) = Q_split_x_P * P_freq ;
     // P_freq is a column vec.
     // In a sense I am appending these values
-    cout << "Q_x_P_vec operation time = " << timer.toc()  << endl;
+    // cout << "Q_x_P_vec operation time = " << timer.toc()  << endl;
 
-    cout << "Got here, after Q_x_P_vec fill " << endl;
-    cout << "Q_split_x_P.n_rows = " << Q_split_x_P.n_rows << std::endl;
-   //  cout << "Q_split_x_P.n_cols = " << Q_split_x_P.n_cols << std::endl;
+    // cout << "Got here, after Q_x_P_vec fill " << endl;
+    // cout << "Q_split_x_P.n_rows = " << Q_split_x_P.n_rows << std::endl;
+   //  // cout << "Q_split_x_P.n_cols = " << Q_split_x_P.n_cols << std::endl;
 
     // P_x_Q_vec(span( spl(spl_i), spl(spl_i + 1) - 1 )) =
     //   (Q_split_x_P * Q_freq).t() ;
@@ -101,15 +101,15 @@ arma::mat fisherEKSsparse(const arma::sp_mat  Q_consol,  const arma::sp_mat  P_c
     timer.tic();
      P_x_Q_vec += Q_freq.cols(spl(spl_i), spl(spl_i + 1) - 1 ) * Q_split_x_P ;
 
-     cout << "P_x_Q_vec operation time = " << timer.toc()  << endl;
+     // cout << "P_x_Q_vec operation time = " << timer.toc()  << endl;
 
      timer.tic();
     // Q_freq originally comes in as a column vector
     // P_x_Q_vec is a row vector. Add in place
-    cout << "Got here, after P_x_Q_vec addition " << endl;
+    // cout << "Got here, after P_x_Q_vec addition " << endl;
 
    // uvec Q_split_ind = regspace<uvec>(spl(spl_i), spl(spl_i + 1) - 1)  ;
-  //  cout << "Got here, after Q_split_ind creation " << endl;
+  //  // cout << "Got here, after Q_split_ind creation " << endl;
 
    // uvec Q_split_supra_ind = conv_to<uvec>::from(
     //  sugar_in(
@@ -132,15 +132,15 @@ arma::mat fisherEKSsparse(const arma::sp_mat  Q_consol,  const arma::sp_mat  P_c
 
    // Jumping through a bunch of hoops to get compound logical expressions
 
-    // cout << "IN operator time = " << timer.toc()  << endl;
+    // // cout << "IN operator time = " << timer.toc()  << endl;
    // Had to convert a lot since Rcpp's sugar "in"
    // is written for a certain data ype
-   cout << "Got here, after Q_split_supra_ind creation " << endl;
+   // cout << "Got here, after Q_split_supra_ind creation " << endl;
    // Q_split_supra_ind.print();
    // Q_ind.print() ;
    // P_ind.print() ;
-   cout << "Q_split_x_P.n_rows " << Q_split_x_P.n_rows << endl;
-   cout << "Q_split_x_P.n_cols " << Q_split_x_P.n_cols << endl;
+   // cout << "Q_split_x_P.n_rows " << Q_split_x_P.n_rows << endl;
+   // cout << "Q_split_x_P.n_cols " << Q_split_x_P.n_cols << endl;
 
   // uvec test = conv_to<uvec>::from(Q_ind(Q_split_supra_ind) +
   //   (conv_to<vec>::from(P_ind(Q_split_supra_ind)) - 1L) * Q_split_x_P.n_rows) ;
@@ -160,20 +160,20 @@ arma::mat fisherEKSsparse(const arma::sp_mat  Q_consol,  const arma::sp_mat  P_c
 
     // test.print();
     // stop("STOP");
-    // cout << "max test value " << max(test) << endl;
-    cout << "Q_split_x_P.n_elem " << Q_split_x_P.n_elem << endl;
+    // // cout << "max test value " << max(test) << endl;
+    // cout << "Q_split_x_P.n_elem " << Q_split_x_P.n_elem << endl;
    // Q_P_ind_combined_temp.print();
 
     revenue(Q_split_supra_ind) =
        Q_split_x_P( arma::sub2ind( size(Q_split_x_P), testt.t() )) ;
       // Q_split_x_P( arma::sub2ind( size(Q_split_x_P), Q_P_ind_combined_temp ) ) ;
 
-    cout << "Got here, after revenue fill " << endl;
-    cout << "Rest of operations in the loop = " << timer.toc()  << endl;
+    // cout << "Got here, after revenue fill " << endl;
+    // cout << "Rest of operations in the loop = " << timer.toc()  << endl;
 
   }
 
-  cout << "Got here, after loop done " << endl;
+  // cout << "Got here, after loop done " << endl;
 
   double sum_revenue = sum(revenue) ;
 
@@ -183,7 +183,7 @@ arma::mat fisherEKSsparse(const arma::sp_mat  Q_consol,  const arma::sp_mat  P_c
         Q_x_P_vec(base_period) +
         P_x_Q_vec(base_period) ;
 
-  cout << "Got here, after top_row calc " << endl;
+  // cout << "Got here, after top_row calc " << endl;
 
   arma::vec ret = (1 / (2 * M_dbl)) * (
         top_row +
@@ -211,20 +211,20 @@ arma::mat fisherEKSdense(const arma::mat  Q_consol,  const arma::mat  P_consol,
                               //     arma::mat split_size) {
 
   // auto x = 10;
-  cout << "Got here, after data read-in " << endl;
+  // cout << "Got here, after data read-in " << endl;
   uword base_period = 0 ;
   double M_dbl = Q_ind.n_elem ;
   uword split_interval = ceil( as_scalar(2e+12) / (P_consol.n_rows * Q_consol.n_rows)) ;
   // 1e+08 ; 1e+6; 1e+2; 1e+12; 2e+10 2e+6; Best: split_size = 1e+13
   // The 1e+08 will likely create a bug if there are more than 100 million firms
   // 1e+08 is designed to keep the Q_split_x_P under one gig of memory
-  cout << "Got here, right before spl creation " << endl;
+  // cout << "Got here, right before spl creation " << endl;
   uvec spl = regspace<uvec>(1, split_interval, Q_consol.n_rows - 1) - 1L  ;
   // subtracting 1 from P_consol.n_rows so that I can append it later
   // without running into a bug. Using the useful behavior of regspace here
-  cout << "Got here, after spl creation " << endl;
+  // cout << "Got here, after spl creation " << endl;
   spl.resize(spl.n_elem + 1) ;
-  cout << "Got here, after spl resize " << endl;
+  // cout << "Got here, after spl resize " << endl;
   spl(spl.n_elem - 1) = Q_consol.n_rows  ;
   // preventing off-by-one error.
 
@@ -235,14 +235,14 @@ arma::mat fisherEKSdense(const arma::mat  Q_consol,  const arma::mat  P_consol,
   arma::vec revenue(Q_ind.n_elem) ;
   revenue.zeros() ;
 
-  cout << "spl.n_rows = " << spl.n_rows << std::endl;
-  // cout << "spl values: " << endl;
-  cout << "spl element 0 = " << spl(0) << std::endl;
-  cout << "spl element 1 = " << spl(1) << std::endl;
-  cout << "spl elements = " << std::endl;
+  // cout << "spl.n_rows = " << spl.n_rows << std::endl;
+  // // cout << "spl values: " << endl;
+  // cout << "spl element 0 = " << spl(0) << std::endl;
+  // cout << "spl element 1 = " << spl(1) << std::endl;
+  // cout << "spl elements = " << std::endl;
  // spl.print() ;
 
-  cout << "Got here, right before loop " << endl;
+  // cout << "Got here, right before loop " << endl;
 
 //   stop("") ;
 
@@ -255,7 +255,7 @@ arma::mat fisherEKSdense(const arma::mat  Q_consol,  const arma::mat  P_consol,
  // Progress p(0, false);
 
   for (uword spl_i=0; spl_i < (spl.n_elem - 1); spl_i++) {
-    cout << "iteration " << spl_i << " of " << (spl.n_elem - 1) << endl;
+    // cout << "iteration " << spl_i << " of " << (spl.n_elem - 1) << endl;
     // Note that col < split.n_elem is strictly less than, so
     // it won't run over the last element.
     // uvec split_span = span(split(split_it), split(split_it + 1)) ;
@@ -270,20 +270,20 @@ arma::mat fisherEKSdense(const arma::mat  Q_consol,  const arma::mat  P_consol,
     arma::mat Q_split_x_P = log( Q_consol.rows(
       spl(spl_i), spl(spl_i + 1) - 1) * P_consol.t() ) ;
 
-    cout << "Main matrix operation time = " << timer.toc()  << endl;
+    // cout << "Main matrix operation time = " << timer.toc()  << endl;
 
-    cout << "Got here, after Q_split_x_P  creation " << endl;
+    // cout << "Got here, after Q_split_x_P  creation " << endl;
 
     timer.tic();
 
     Q_x_P_vec(span( spl(spl_i), spl(spl_i + 1) - 1 )) = Q_split_x_P * P_freq ;
     // P_freq is a column vec.
     // In a sense I am appending these values
-    cout << "Q_x_P_vec operation time = " << timer.toc()  << endl;
+    // cout << "Q_x_P_vec operation time = " << timer.toc()  << endl;
 
-    cout << "Got here, after Q_x_P_vec fill " << endl;
-    cout << "Q_split_x_P.n_rows = " << Q_split_x_P.n_rows << std::endl;
-   //  cout << "Q_split_x_P.n_cols = " << Q_split_x_P.n_cols << std::endl;
+    // cout << "Got here, after Q_x_P_vec fill " << endl;
+    // cout << "Q_split_x_P.n_rows = " << Q_split_x_P.n_rows << std::endl;
+   //  // cout << "Q_split_x_P.n_cols = " << Q_split_x_P.n_cols << std::endl;
 
     // P_x_Q_vec(span( spl(spl_i), spl(spl_i + 1) - 1 )) =
     //   (Q_split_x_P * Q_freq).t() ;
@@ -293,15 +293,15 @@ arma::mat fisherEKSdense(const arma::mat  Q_consol,  const arma::mat  P_consol,
     timer.tic();
      P_x_Q_vec += Q_freq.cols(spl(spl_i), spl(spl_i + 1) - 1 ) * Q_split_x_P ;
 
-     cout << "P_x_Q_vec operation time = " << timer.toc()  << endl;
+     // cout << "P_x_Q_vec operation time = " << timer.toc()  << endl;
 
      timer.tic();
     // Q_freq originally comes in as a column vector
     // P_x_Q_vec is a row vector. Add in place
-    cout << "Got here, after P_x_Q_vec addition " << endl;
+    // cout << "Got here, after P_x_Q_vec addition " << endl;
 
    // uvec Q_split_ind = regspace<uvec>(spl(spl_i), spl(spl_i + 1) - 1)  ;
-  //  cout << "Got here, after Q_split_ind creation " << endl;
+  //  // cout << "Got here, after Q_split_ind creation " << endl;
 
    // uvec Q_split_supra_ind = conv_to<uvec>::from(
     //  sugar_in(
@@ -324,15 +324,15 @@ arma::mat fisherEKSdense(const arma::mat  Q_consol,  const arma::mat  P_consol,
 
    // Jumping through a bunch of hoops to get compound logical expressions
 
-    // cout << "IN operator time = " << timer.toc()  << endl;
+    // // cout << "IN operator time = " << timer.toc()  << endl;
    // Had to convert a lot since Rcpp's sugar "in"
    // is written for a certain data ype
-   cout << "Got here, after Q_split_supra_ind creation " << endl;
+   // cout << "Got here, after Q_split_supra_ind creation " << endl;
    // Q_split_supra_ind.print();
    // Q_ind.print() ;
    // P_ind.print() ;
-   cout << "Q_split_x_P.n_rows " << Q_split_x_P.n_rows << endl;
-   cout << "Q_split_x_P.n_cols " << Q_split_x_P.n_cols << endl;
+   // cout << "Q_split_x_P.n_rows " << Q_split_x_P.n_rows << endl;
+   // cout << "Q_split_x_P.n_cols " << Q_split_x_P.n_cols << endl;
 
   // uvec test = conv_to<uvec>::from(Q_ind(Q_split_supra_ind) +
   //   (conv_to<vec>::from(P_ind(Q_split_supra_ind)) - 1L) * Q_split_x_P.n_rows) ;
@@ -352,20 +352,20 @@ arma::mat fisherEKSdense(const arma::mat  Q_consol,  const arma::mat  P_consol,
 
     // test.print();
     // stop("STOP");
-    // cout << "max test value " << max(test) << endl;
-    cout << "Q_split_x_P.n_elem " << Q_split_x_P.n_elem << endl;
+    // // cout << "max test value " << max(test) << endl;
+    // cout << "Q_split_x_P.n_elem " << Q_split_x_P.n_elem << endl;
    // Q_P_ind_combined_temp.print();
 
     revenue(Q_split_supra_ind) =
        Q_split_x_P( arma::sub2ind( size(Q_split_x_P), testt.t() )) ;
       // Q_split_x_P( arma::sub2ind( size(Q_split_x_P), Q_P_ind_combined_temp ) ) ;
 
-    cout << "Got here, after revenue fill " << endl;
-    cout << "Rest of operations in the loop = " << timer.toc()  << endl;
+    // cout << "Got here, after revenue fill " << endl;
+    // cout << "Rest of operations in the loop = " << timer.toc()  << endl;
 
   }
 
-  cout << "Got here, after loop done " << endl;
+  // cout << "Got here, after loop done " << endl;
 
   double sum_revenue = sum(revenue) ;
 
@@ -375,7 +375,7 @@ arma::mat fisherEKSdense(const arma::mat  Q_consol,  const arma::mat  P_consol,
         Q_x_P_vec(base_period) +
         P_x_Q_vec(base_period) ;
 
-  cout << "Got here, after top_row calc " << endl;
+  // cout << "Got here, after top_row calc " << endl;
 
   arma::vec ret = (1 / (2 * M_dbl)) * (
         top_row +
@@ -445,7 +445,7 @@ arma::mat fisherInd (arma::mat Q, arma::mat P, int base_period) {
 
     arma::vec interm_vec_prod = I_row % I_col ;
 
-      // Rcout << "The value is " << sum(interm_vec_prod) << std::endl ;
+      // R// cout << "The value is " << sum(interm_vec_prod) << std::endl ;
       if ( ! arma::is_finite(interm_vec_prod) ) {
         // Note that arma::is_finite checks the whole vector for any non-finite values
         stop("NaNs produced in quantity index. Check the quantity and price matrix inputs. Quantity indices must be positive, so the product of quantities and prices must be positive in all cases.") ;

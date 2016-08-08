@@ -117,13 +117,13 @@ quantityIndex <- function( prices, quantities, base, data,
 }
 
 
-consolMatrix <- function(x) {
-  if (!is.data.table(x)) x <- as.data.table(x)
-  xRet <- x[, .(.N), by = names(x)]
-  nRet <- matrix(xRet$N, ncol = 1)
-  xRet[, N := NULL]
-  list(mat = as.matrix(xRet), freq = nRet)
-}
+# consolMatrix <- function(x) {
+#   if (!is.data.table(x)) x <- as.data.table(x)
+#   xRet <- x[, .(.N), by = names(x)]
+#   nRet <- matrix(xRet$N, ncol = 1)
+#   xRet[, N := NULL]
+#   list(mat = as.matrix(xRet), freq = nRet)
+# }
 
 
 
@@ -138,24 +138,6 @@ fisherEKS <- function( prices, quantities, data) {
         matrix(rep(1, nrow(data)), ncol = 1),
         1:nrow(data) - 1, # zero indexing of C++
         1:nrow(data) - 1
-      )
-
-    } else {
-      stop("TODO")
-    }
-
-   return(as.vector(ret))
-}
-
-
-fisherEKS.simple <- function( prices, quantities, data) {
-
-    if (all(!duplicated(data[, prices])) & all(!duplicated(data[, quantities]))) {
-
-      ret <- fisherInd(
-        as.matrix(data[, quantities]),
-        as.matrix(data[, prices]),
-        1L
       )
 
     } else {
