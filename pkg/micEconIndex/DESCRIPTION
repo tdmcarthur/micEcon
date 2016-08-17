@@ -10,6 +10,8 @@ Imports:
     miscTools (>= 0.6-1),
     data.table (>= 1.9.6),
     Rcpp
+SystemRequirements:
+    C++11
 Suggests:
     Ecdat (>= 0.1-5),
     micEcon (>= 0.6-12),
