@@ -559,7 +559,7 @@ fisherIndfastest.ret <- fisherIndfastest(
 ))
 }
 
-if (T) {
+if (F) {
 print(system.time(
 fisherIndfastestfurious.ret <- fisherIndfastestfurious(
               # Q_consol = Q.mat.consol$mat,
