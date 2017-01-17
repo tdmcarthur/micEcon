@@ -3,6 +3,8 @@ os:
   - linux
   - osx
 cache: packages
+before_install:
+  - cd pkg/micEconIndex
 addons:
   apt:
     sources:
@@ -18,4 +20,6 @@ before_install: |
   CXX1XSTD=-std=c++11
 # Helpful docs:
 # https://docs.travis-ci.com/user/languages/r
-# https://github.com/wesm/feather/issues/154
+#
+
+#
