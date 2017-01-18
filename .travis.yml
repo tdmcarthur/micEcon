@@ -3,8 +3,6 @@ os:
   - linux
   - osx
 cache: packages
-before_install:
-  - cd pkg/micEconIndex
 addons:
   apt:
     sources:
